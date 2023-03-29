@@ -10,6 +10,7 @@
   </head>
   <body>
     <canvas id="canvas" width="400" height="400"></canvas>
+    <button id="clearBtn">清空画布</button>
     <script>
       // 获取canvas元素
       var canvas = document.getElementById("canvas");
@@ -36,17 +37,17 @@
 
       // 监听鼠标松开事件
       canvas.addEventListener("mouseup", function () {
-        // 停止绘制
+        // 移除鼠标移动事件的监听器
         canvas.removeEventListener("mousemove", drawing);
       });
 
       // 绘制函数
       function drawing(e) {
-        // 获取鼠标移动位置的坐标
+        // 获取当前鼠标位置的坐标
         var currentX = e.clientX - canvas.offsetLeft;
         var currentY = e.clientY - canvas.offsetTop;
 
-        // 绘制线条
+        // 绘制线段
         ctx.lineTo(currentX, currentY);
         ctx.stroke();
 
@@ -54,8 +55,15 @@
         lastX = currentX;
         lastY = currentY;
       }
+
+      // 监听清空按钮的点击事件
+      var clearBtn = document.getElementById("clearBtn");
+      clearBtn.addEventListener("click", function () {
+        // 清空画布
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      });
     </script>
-<h1>←方框内可以使用鼠标作画</h1>
+<h1>方框内可以使用鼠标作画</h1>
 <br>
 <a href="https://huashilm.github.io">返回首页</a>
   </body>
