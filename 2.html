@@ -11,6 +11,7 @@
   <body>
     <canvas id="canvas" width="400" height="400"></canvas>
     <button id="clearBtn">清空画布</button>
+    <button id="saveBtn">保存图片</button>
     <script>
       // 获取canvas元素
       var canvas = document.getElementById("canvas");
@@ -61,6 +62,36 @@
       clearBtn.addEventListener("click", function () {
         // 清空画布
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+      });
+
+      // 监听保存按钮的点击事件
+      var saveBtn = document.getElementById("saveBtn");
+      saveBtn.addEventListener("click", function () {
+        // 创建一个新的画布
+        var newCanvas = document.createElement("canvas");
+        newCanvas.width = canvas.width;
+        newCanvas.height = canvas.height;
+
+        // 获取新画布的绘图上下文
+        var newCtx = newCanvas.getContext("2d");
+
+        // 填充背景颜色
+        newCtx.fillStyle = "#fff";
+        newCtx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+
+        // 将原画布绘制到新画布上
+        newCtx.drawImage(canvas, 0, 0);
+
+        // 将新画布转化为图像数据
+        var dataURL = newCanvas.toDataURL("image/png");
+
+        // 创建一个链接元素
+        var link = document.createElement("a");
+        link.download = "myDrawing.png";
+        link.href = dataURL;
+
+        // 触发链接的点击事件，开始下载
+        link.click();
       });
     </script>
 <h1>方框内可以使用鼠标作画</h1>
