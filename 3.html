@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>异世界穿越，你会成为谁？</title>
+  </head>
+  <body>
+    <h1>异世界穿越，你会成为谁？</h1>
+    <form>
+      <label for="nameInput">请输入您的网名：</label>
+      <input type="text" id="nameInput" name="name" required>
+      <br><br>
+      <button type="submit">一键穿越异世界</button>
+    </form>
+    <p id="result"></p>
+    <script>
+      // 动画作品角色名字列表
+      var animeCharacters = {
+"进击的巨人": [
+          "艾伦",
+          "米卡萨",
+          "阿明",
+          "吉克",
+          "汉尼斯",
+          "凯尼",
+          "杰克",
+        ],
+        "海贼王": [
+          "路飞",
+          "索隆",
+          "娜美",
+          "乌索普",
+          "山治",
+          "乔巴",
+          "罗宾",
+        ],
+        "火影忍者": [
+          "鸣人",
+          "佐助",
+          "小樱",
+          "卡卡西",
+          "大蛇丸",
+          "宇智波鼬",
+          "自来也",
+        ],
+        "鬼灭之刃": [
+          "炭治郎",
+          "竈門禰豆子",
+          "我妻善逸",
+          "嘴平伊之助",
+          "冨岡義勇",
+          "胡蝶忍",
+          "不死川実弥",
+        ],
+        "刀剑神域": [
+          "桐人",
+          "亚丝娜",
+          "利威尔",
+          "西蒙",
+          "莉法",
+          "叶月",
+          "尤吉欧",
+        ],        
+        "JOJO的奇妙冒险": [
+          "乔纳森·乔斯达",
+          "迪奥·布兰度",
+          "约瑟夫·乔斯达",
+          "空条承太郎",
+          "迪亚波罗",
+          "吉良吉影",
+          "乔鲁诺·乔巴那",
+        ],
+      };
+
+      // 获取表单和结果元素
+      var form = document.querySelector("form");
+      var result = document.querySelector("#result");
+
+      // 处理表单提交事件
+      form.addEventListener("submit", function(event) {
+        // 阻止表单默认提交行为
+        event.preventDefault();
+
+        // 获取用户输入的姓名
+        var name = document.querySelector("#nameInput").value;
+
+        // 从动画作品角色名字列表中随机选择一个角色
+        var animeNames = Object.keys(animeCharacters);
+        var animeName = animeNames[Math.floor(Math.random() * animeNames.length)];
+        var characterNames = animeCharacters[animeName];
+        var characterName = characterNames[Math.floor(Math.random() * characterNames.length)];
+
+        // 在结果元素中显示生成的角色名字
+        result.textContent = "你穿越到了《" + animeName + "》，成为了" + characterName + "。";
+      });
+    </script>
+  </body>
+</html>
