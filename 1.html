@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>计算器</title>
+	<style>
+		#calculator {
+			width: 300px;
+			height: 400px;
+			border: 2px solid black;
+			margin: auto;
+			text-align: center;
+			padding-top: 20px;
+		}
+
+		input[type="button"] {
+			width: 50px;
+			height: 50px;
+			font-size: 20px;
+			margin: 5px;
+			background-color: #eee;
+			border: 2px solid black;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		#result {
+			font-size: 40px;
+			margin: 20px;
+			height: 60px;
+			border: 2px solid black;
+			padding: 10px;
+			text-align: right;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+	<div id="calculator">
+		<div id="result"></div>
+		<input type="button" value="1" onclick="addNumber('1')">
+		<input type="button" value="2" onclick="addNumber('2')">
+		<input type="button" value="3" onclick="addNumber('3')">
+		<input type="button" value="+" onclick="addOperator('+')">
+		<br>
+		<input type="button" value="4" onclick="addNumber('4')">
+		<input type="button" value="5" onclick="addNumber('5')">
+		<input type="button" value="6" onclick="addNumber('6')">
+		<input type="button" value="-" onclick="addOperator('-')">
+		<br>
+		<input type="button" value="7" onclick="addNumber('7')">
+		<input type="button" value="8" onclick="addNumber('8')">
+		<input type="button" value="9" onclick="addNumber('9')">
+		<input type="button" value="*" onclick="addOperator('*')">
+		<br>
+		<input type="button" value="C" onclick="clearResult()">
+		<input type="button" value="0" onclick="addNumber('0')">
+		<input type="button" value="=" onclick="calculate()">
+		<input type="button" value="/" onclick="addOperator('/')">
+	</div>
+	<script>
+		let resultElement = document.getElementById('result');
+		let currentNumber = '';
+		let currentOperator = '';
+		let currentResult = null;
+
+		// 添加数字
+		function addNumber(number) {
+			currentNumber += number;
+			resultElement.innerHTML = currentNumber;
+		}
+
+		// 添加运算符
+		function addOperator(operator) {
+			if (currentNumber !== '') {
+				if (currentResult === null) {
+					currentResult = Number(currentNumber);
+				} else {
+					currentResult = calculateResult();
+				}
+				currentNumber = '';
+				currentOperator = operator;
+				resultElement.innerHTML = currentResult + operator;
+			}
+		}
+
+		// 计算结果
+		function calculateResult() {
+			const number = Number(currentNumber);
+			switch(currentOperator) {
+				case '+':
+					return currentResult + number;
+				case '-':
+					return currentResult - number;
+				case '*':
+					return currentResult * number;
+				case '/':
+					return currentResult / number;
+			}
+		}
+
+		// 清除结果
+		function clearResult() {
+			currentNumber = '';
+			currentOperator = '';
+			currentResult = null;
+			resultElement.innerHTML = '';
+		}
+
+		// 计算
+		function calculate() {
+			if (currentOperator !== '' && currentNumber !== '') {
+				currentResult = calculateResult();
+				currentNumber = '';
+				currentOperator = '';
+				resultElement.innerHTML = currentResult;
+			}
+		}
+	</script>
+</body>
+</html>
