@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AI 绘画</title>
+	<style>
+		body {
+			background-color: #eee;
+			text-align: center;
+			margin-top: 50px;
+		}
+
+		h1 {
+			font-family: Arial, sans-serif;
+			font-size: 40px;
+			margin-bottom: 30px;
+		}
+
+		canvas {
+			max-width: 100%;
+			border-radius: 10px;
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+		}
+
+		button {
+			padding: 10px 20px;
+			font-size: 20px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-top: 30px;
+		}
+	</style>
+</head>
+<body>
+	<h1>AI 绘画</h1>
+	<canvas id="canvas" width="400" height="400"></canvas>
+	<button onclick="draw()">AI 绘画</button>
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+	<script>
+		const canvas = document.getElementById('canvas');
+		const context = canvas.getContext('2d');
+		let model;
+
+		async function loadModel() {
+			model = await tf.loadGraphModel('https://storage.googleapis.com/tfjs-models/savedmodel/mobilenet_v2_1.0_224/model.json');
+			console.log('模型已加载');
+		}
+
+		async function draw() {
+			if (!model) {
+				await loadModel();
+			}
+
+			context.clearRect(0, 0, canvas.width, canvas.height);
+
+			const image = new Image();
+			image.crossOrigin = 'anonymous';
+			image.src = 'https://picsum.photos/224/224';
+			image.onload = () => {
+				context.drawImage(image, 0, 0, canvas.width, canvas.height);
+				const tensor = tf.browser.fromPixels(canvas).resizeNearestNeighbor([224, 224]).toFloat().expandDims();
+				const predictions = model.predict(tensor).dataSync();
+				const result = Array.from(predictions).map((value, index) => ({ value, index })).sort((a, b) => b.value - a.value);
+				const topResult = result[0];
+				const color = getColor(topResult.index);
+				context.fillStyle = color;
+				context.fillRect(0, 0, canvas.width, canvas.height);
+			};
+		}
+
+		function getColor(index) {
+			switch (index) {
+				case 0:
+					return 'red';
+				case 1:
+					return 'green';
+				case 2:
+					return 'blue';
+				default:
+					return 'black';
+			}
+		}
+	</script>
+</body>
+</html>
